@@ -4,9 +4,20 @@ import java.util.*;
  * Created by Seth on 2/7/2017.
  */
 public class AnalysisUtils {
+    public static LinkedHashMap<Character, Float> ENGLISH_LETTER_FREQUENCIES;
+    static{
+        ENGLISH_LETTER_FREQUENCIES = new LinkedHashMap<>();
+        ENGLISH_LETTER_FREQUENCIES.put('E', 12.702f);
+        ENGLISH_LETTER_FREQUENCIES.put('T', 9.056f);
+        ENGLISH_LETTER_FREQUENCIES.put('A', 8.167f);
+        ENGLISH_LETTER_FREQUENCIES.put('O', 7.507f);
+        ENGLISH_LETTER_FREQUENCIES.put('I', 6.966f);
+    }
     private static int DIGRAMS_TO_RETURN = 15;
     private static int LETTER_FREQUENCIES_TO_RETURN = 15;
     private String cipherText;
+
+    //TODO: some kind of error checking / input protection
 
     public AnalysisUtils(String cipherText){
         this.cipherText = cipherText;
@@ -107,5 +118,11 @@ public class AnalysisUtils {
 
         //return the result
         return total;
+    }
+
+    public void printLetterFreq(LinkedHashMap<Character, Float> map){
+        for(char c : map.keySet()){
+            System.out.printf("%c: %.3f%%\n", c, 100.0*map.get(c));
+        }
     }
 }

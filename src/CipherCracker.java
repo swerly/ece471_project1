@@ -3,24 +3,34 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by Seth on 2/7/2017.
  */
 public class CipherCracker {
     private String cipherText;
+    private CipherAnalytics analytics;
 
     public CipherCracker(String cipherLocation) {
         this.cipherText = getCipherTextFromFile(cipherLocation);
-        System.out.println(cipherText.charAt(1));
     }
 
     public void run(){
-        AnalysisUtils analysisUtils = new AnalysisUtils(cipherText);
-        HashMap<Character, Float> characterFrequencies = analysisUtils.getTopCharacterFrequencies();
-        HashMap<String, Integer> topDigrams = analysisUtils.getTopDigrams();
-        double ic = analysisUtils.getIndexOfCoincidence(cipherText);
-        System.out.println("Test");
+        //run some analysis on the cipher text and store the results in this analytics object
+        analytics = new CipherAnalytics();
+        analytics.setAnalyticsFromCipherText(cipherText);
+
+        //create a shift cracker to work with the cipher text
+        ShiftCracker shiftCracker = new ShiftCracker(analytics);
+        if (shiftCracker.testShift()){
+            shiftCracker.printDecryptedText(cipherText);
+        } else {
+            System.out.println("Cipher cannot be cracked by currently implemented methods");
+        }
+
+        return;
+
     }
 
     private String getCipherTextFromFile(String path )
