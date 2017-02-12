@@ -5,24 +5,34 @@ import java.util.List;
 /**
  * Created by Seth on 2/8/2017.
  */
-public class ShiftCracker {
+public class ShiftCracker extends AbstractCracker{
     private static float TESTING_DFFERENCE = 1f;
     private static float LETTERS_TO_TEST = 3;
-    private CipherAnalytics analytics;
     private int cipherShamt;
 
     public ShiftCracker(CipherAnalytics analytics){
-        this.analytics = analytics;
+        super(analytics);
     }
 
-    public boolean testShift(){
+    @Override
+    public boolean testCipher(){
         if(!testFrequencies()){
+            String msg = "Top cipher letter frequencies don't match common English letter frequencies.\n" +
+                    "This was most likely not encrypted using shifts, but may be bruteforced later.";
+            CipherCracker.printStatusMessage(msg, null);
             return false;
         }
 
         if (!testShiftAmt()){
+            String msg = "When comparing cipher letter frequencies to common English letter frequencies, the shifts do not match up." +
+                    "This was most likely not encrypted using shifts, but may be bruteforced later";
+            CipherCracker.printStatusMessage(msg, null);
             return false;
         }
+
+        String msg = "When comparing cipher letter frequencies to common English letter frequencies, the shifts seem to match!\n" +
+                "This was most likey encrypted using shifts, but we will confirm later";
+        CipherCracker.printStatusMessage(msg, null);
         return true;
     }
 
