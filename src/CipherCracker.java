@@ -48,7 +48,30 @@ public class CipherCracker {
 
         printNarrowedDownTypes();
 
+        if( narrowedDownCipherTypes.size() == 1 ){
+            AbstractCracker cracker = crackers.get(narrowedDownCipherTypes.get(0));
+
+            if( cracker instanceof ShiftCracker ){
+                System.out.printf("\nDecrytped Message:\n\n");
+                ((ShiftCracker) cracker).printDecryptedText(cipherText);
+            }
+            else if( narrowedDownCipherTypes.get(0) == "Substitution Cipher" ){
+                ((SubstitutionCracker) cracker).run(cipherText);
+            }
+            else if( narrowedDownCipherTypes.get(0) == "Vigenere Cipher" ){
+
+            }
+            else if( narrowedDownCipherTypes.get(0) == "Columnar Transposition Cipher" ){
+
+            }
+            else if( narrowedDownCipherTypes.get(0) == "One-Time Pad Cipher" ){
+
+            }
+
+        }
+
         //TODO: insert cipher cracking code here
+
         }
 
     private String getCipherTextFromFile(String path )

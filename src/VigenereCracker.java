@@ -221,4 +221,7 @@ public class VigenereCracker extends AbstractCracker{
             System.out.printf("%d: %.7f\n", i+1, averageICs.get(i));
         }
     }
+
+
+
 }
