@@ -198,4 +198,8 @@ public class AnalysisUtils {
         }
         return s1;
     }
+
+    public static boolean isLowercase(char c){
+        return c>='a' && c<='z';
+    }
 }

@@ -9,4 +9,5 @@ public abstract class AbstractCracker {
     }
 
     public abstract boolean testCipher();
+    public abstract void runCracker();
 }

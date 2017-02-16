@@ -10,4 +10,9 @@ public class SubstitutionCracker extends AbstractCracker {
     public boolean testCipher() {
         return false;
     }
+
+    @Override
+    public void runCracker() {
+
+    }
 }

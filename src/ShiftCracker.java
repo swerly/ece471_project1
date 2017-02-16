@@ -36,6 +36,12 @@ public class ShiftCracker extends AbstractCracker{
         return true;
     }
 
+    @Override
+    public void runCracker() {
+        //todo: does this text look decrypted?
+        //if not, try just shifting by e
+    }
+
     public boolean testFrequencies(){
         LinkedHashMap<Character, Float> charFreqMap = analytics.getCharacterFreqencies();
         LinkedHashMap<Character, Float> commonCharFreqMap = AnalysisUtils.ENGLISH_LETTER_FREQUENCIES;
@@ -83,9 +89,10 @@ public class ShiftCracker extends AbstractCracker{
         return (freqToTest <= (commonFreq+TESTING_DFFERENCE)) && (freqToTest >= (commonFreq-TESTING_DFFERENCE));
     }
 
-    public int getShiftAmt(char p, char c){
-        char pNorm = (char) (p-'A');
-        char cNorm = (char) (c-'A');
+    public static int getShiftAmt(char p, char c){
+        char shifter = AnalysisUtils.isLowercase(p) ? 'a' : 'A';
+        char pNorm = (char) (p-shifter);
+        char cNorm = (char) (c-shifter);
         return cNorm - pNorm < 0 ? cNorm - pNorm + 26: cNorm - pNorm;
     }
 
@@ -104,11 +111,12 @@ public class ShiftCracker extends AbstractCracker{
         }
     }
 
-    private char getShiftedChar(char c, int shift){
-        char working = (char) (c-'A');
+    public static char getShiftedChar(char c, int shift){
+        char shifter = AnalysisUtils.isLowercase(c) ? 'a' : 'A';
+        char working = (char) (c-shifter);
 
         int newVal = working - shift < 0 ? working-shift+26 : working-shift;
 
-        return (char) (newVal+'A');
+        return (char) (newVal+shifter);
     }
 }

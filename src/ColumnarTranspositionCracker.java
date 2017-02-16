@@ -21,4 +21,9 @@ public class ColumnarTranspositionCracker extends AbstractCracker {
         CipherCracker.printStatusMessage(msg, null);
         return monogramsMatch;
     }
+
+    @Override
+    public void runCracker() {
+
+    }
 }
