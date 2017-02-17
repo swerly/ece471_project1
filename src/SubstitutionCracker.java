@@ -56,7 +56,7 @@ public class SubstitutionCracker extends AbstractCracker {
 
             //Print Template for potential matchings (freq of english and freq of ctext)//////////
             System.out.printf("\n+---------------------------------------------------------------------------------------------------------------------------+\n");
-            System.out.printf("|                                                    Letter Frequencies:                                                    |\n");
+            System.out.printf("|                                             Top 15 Letter Frequencies:                                                    |\n");
             System.out.printf("+---------------+-----------------------------------------------------------------------------------------------------------+\n");
             System.out.printf("|  In Message:  | ");
 
