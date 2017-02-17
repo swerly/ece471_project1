@@ -56,7 +56,7 @@ public class SubstitutionCracker extends AbstractCracker {
 
             //Print Template for potential matchings (freq of english and freq of ctext)//////////
             System.out.printf("\n+---------------------------------------------------------------------------------------------------------------------------+\n");
-            System.out.printf("|                                                    Letter Frequencies:                                                    |\n");
+            System.out.printf("|                                             Top 15 Letter Frequencies:                                                    |\n");
             System.out.printf("+---------------+-----------------------------------------------------------------------------------------------------------+\n");
             System.out.printf("|  In Message:  | ");
 
@@ -78,9 +78,10 @@ public class SubstitutionCracker extends AbstractCracker {
 
             tempPT = plainText;
 
-            System.out.printf("\nChoose a letter from the ciphertext to convert (Uppercase Notation Required): ");
+            System.out.printf("\nChoose a letter from the ciphertext to convert: ");
             do{
                 inputCipherLetter = reader.next().charAt(0);
+                if (AnalysisUtils.isLowercase(inputCipherLetter)) inputCipherLetter+='A'-'a';
 
                 if( mappedCipher.get( inputCipherLetter - 65 ) != -1 ){
                     System.out.printf("\nThis letter in the ciphertext has already been decrypted, would you like to change it (y/n): ");
@@ -96,16 +97,17 @@ public class SubstitutionCracker extends AbstractCracker {
                         tempPT = plainText;
                     }
                     else{
-                        System.out.printf("\nChoose a different letter from the ciphertext to conver (Uppercase Notation Required): ");
+                        System.out.printf("\nChoose a different letter from the ciphertext to convert: ");
                         inputCipherLetter = 'a';
                     }
                 }
 
             }while(inputCipherLetter < 65 || inputCipherLetter > 90);
             yORn = ' ';
-            System.out.printf("Choose a letter from the plaintext to convert (Lowercase Notation Required): ");
+            System.out.printf("Choose a letter from the plaintext to convert: ");
             do{
                 inputPlainLetter = reader.next().charAt(0);
+                if (!AnalysisUtils.isLowercase(inputCipherLetter)) inputCipherLetter-='A'-'a';
 
                 for( int i = 0; i < mappedCipher.size(); i++ ){
                     if( mappedCipher.get( i ) == inputPlainLetter ){
