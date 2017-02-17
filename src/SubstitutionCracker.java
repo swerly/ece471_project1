@@ -78,10 +78,9 @@ public class SubstitutionCracker extends AbstractCracker {
 
             tempPT = plainText;
 
-            System.out.printf("\nChoose a letter from the ciphertext to convert: ");
+            System.out.printf("\nChoose a letter from the ciphertext to convert (Uppercase Notation Required): ");
             do{
                 inputCipherLetter = reader.next().charAt(0);
-                if (AnalysisUtils.isLowercase(inputCipherLetter)) inputCipherLetter+='A'-'a';
 
                 if( mappedCipher.get( inputCipherLetter - 65 ) != -1 ){
                     System.out.printf("\nThis letter in the ciphertext has already been decrypted, would you like to change it (y/n): ");
@@ -97,17 +96,16 @@ public class SubstitutionCracker extends AbstractCracker {
                         tempPT = plainText;
                     }
                     else{
-                        System.out.printf("\nChoose a different letter from the ciphertext to convert: ");
+                        System.out.printf("\nChoose a different letter from the ciphertext to conver (Uppercase Notation Required): ");
                         inputCipherLetter = 'a';
                     }
                 }
 
             }while(inputCipherLetter < 65 || inputCipherLetter > 90);
             yORn = ' ';
-            System.out.printf("Choose a letter from the plaintext to convert: ");
+            System.out.printf("Choose a letter from the plaintext to convert (Lowercase Notation Required): ");
             do{
                 inputPlainLetter = reader.next().charAt(0);
-                if (!AnalysisUtils.isLowercase(inputCipherLetter)) inputCipherLetter-='A'-'a';
 
                 for( int i = 0; i < mappedCipher.size(); i++ ){
                     if( mappedCipher.get( i ) == inputPlainLetter ){
