@@ -95,7 +95,7 @@ public class SubstitutionCracker extends AbstractCracker {
                         mappedCipher.set( inputCipherLetter - 65, -1 );
                         tempPT = plainText;
                     }
-                    else{
+                    else {
                         System.out.printf("\nChoose a different letter from the ciphertext to conver (Uppercase Notation Required): ");
                         inputCipherLetter = 'a';
                     }
