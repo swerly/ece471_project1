@@ -2,10 +2,7 @@
  * Created by Seth on 2/11/2017.
  */
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class SubstitutionCracker extends AbstractCracker {
 
@@ -40,6 +37,12 @@ public class SubstitutionCracker extends AbstractCracker {
         char inputPlainLetter = ' ';
         char yORn = ' ';
         String tempPT = plainText;
+        LinkedHashMap<Character, Float> currcharFrequencies = analytics.getCharacterFreqencies();
+        int numSingleDigits = 0;
+
+        LinkedHashMap<Character, Float> charFreqMap = analytics.getCharacterFreqencies();
+        List<Float> frequenciesList = new ArrayList<>(charFreqMap.values());
+        List<Character> charList = new ArrayList<>(charFreqMap.keySet());
 
         plainText = cipherText;
 
@@ -50,6 +53,28 @@ public class SubstitutionCracker extends AbstractCracker {
         }
 
         while( goal == false ) {
+
+            //Print Template for potential matchings (freq of english and freq of ctext)//////////
+            System.out.printf("\n+---------------------------------------------------------------------------------------------------------------------------+\n");
+            System.out.printf("|                                                    Letter Frequencies:                                                    |\n");
+            System.out.printf("+---------------+-----------------------------------------------------------------------------------------------------------+\n");
+            System.out.printf("|  In Message:  | ");
+
+            for( int i = 0; i < 15; i++){
+
+                System.out.printf(" %c=%.1f", charList.get( i ), frequenciesList.get( i ) * 100 ); //replace 'a' with char and 5.432 with float
+
+                if( ( frequenciesList.get( i ) * 100 ) < 10.0 ){ //replace 5 with float
+                    System.out.printf(" ");
+                }
+
+            }
+
+            System.out.printf(" |\n");
+            System.out.printf("+---------------+-----------------------------------------------------------------------------------------------------------+\n");
+            System.out.printf("|  In English:  |  t=15.3 g=10.4 z=7.8  d=7.7  f=7.0  q=6.8  p=6.5  r=6.1  u=5.4  w=4.5  a=3.3  y=3.1  x=2.9  h=2.2  c=1.8  |\n");
+            System.out.printf("+---------------+-----------------------------------------------------------------------------------------------------------+\n");
+
 
             tempPT = plainText;
 
@@ -84,8 +109,13 @@ public class SubstitutionCracker extends AbstractCracker {
 
                 for( int i = 0; i < mappedCipher.size(); i++ ){
                     if( mappedCipher.get( i ) == inputPlainLetter ){
-                        System.out.printf("\nThis letter in the plaintext has already been used, please try again: ");
-                        inputPlainLetter = 'A';
+
+                        unusedCipherLetters.set( i, false );
+                        unusedPlainLetters.set( inputPlainLetter - 97 , false );//maybe keep
+                        mappedCipher.set( i, -1 );
+                        plainText = plainText.replace( inputPlainLetter, (char)(i+65) );
+                        tempPT = plainText;
+
                         break;
                     }
                 }
@@ -96,19 +126,23 @@ public class SubstitutionCracker extends AbstractCracker {
             unusedPlainLetters.set( inputPlainLetter - 97, true );
             mappedCipher.set( inputCipherLetter - 65, (int)inputPlainLetter );
 
+            System.out.printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+
             plainText = plainText.replace( inputCipherLetter, inputPlainLetter );
-            System.out.printf("\nCurrent decoded scheme:\n\n");
+            System.out.printf("\nCiphertext snippet:\n\n");
+            printDecryptedText(cipherText);
+            System.out.printf("\nPlaintext snippet:\n\n");
             printDecryptedText(plainText);
-            System.out.printf("\n\n" + "Would you like to keep this change (y/n): ");
+            System.out.printf("\n" + "Would you like to keep this change (y/n): ");
 
             do{
                 yORn = reader.next().charAt(0);
             }while( yORn != 'y' && yORn != 'n' );
 
-            if( yORn == 'n' ){
+            if( yORn == 'n' ){ //fix?
                 unusedCipherLetters.set( inputCipherLetter - 65, false );
                 unusedPlainLetters.set( inputPlainLetter - 97, false );
-                mappedCipher.set( inputPlainLetter - 97, -1 );
+                mappedCipher.set( inputCipherLetter - 97, -1 );
                 plainText = tempPT;
             }
 
@@ -123,6 +157,8 @@ public class SubstitutionCracker extends AbstractCracker {
                     EOA = reader.next().charAt(0);
                 } while (EOA != 'e' && EOA != 'r' && EOA != 'c');
                 if (EOA == 'e') {
+                    System.out.printf("\nFinal plaintext:\n\n");
+                    printDecryptedTextEnd(plainText);
                     goal = true; //end algorithm
                 }
                 else if ( EOA == 'r' ){
@@ -148,7 +184,22 @@ public class SubstitutionCracker extends AbstractCracker {
     }
 
     public void printDecryptedText(String plainT){
-        int lineSize = 150;
+        int lineSize = 60;
+        int lineCount = 0;
+
+        for (int i = 0; i<180; i++){
+            System.out.printf("%c", plainT.charAt( i ));
+
+            lineCount++;
+            if (lineCount >= lineSize){
+                System.out.println();
+                lineCount=0;
+            }
+        }
+    }
+
+    public void printDecryptedTextEnd(String plainT){
+        int lineSize = 60;
         int lineCount = 0;
 
         for (int i = 0; i<plainT.length(); i++){
