@@ -62,7 +62,7 @@ public class CipherCracker {
             } else if (narrowedDownCipherTypes.get(0) == "Substitution Cipher") {
                 ((SubstitutionCracker) cracker).run(cipherText);
             } else if (narrowedDownCipherTypes.get(0) == "Vigenere Cipher") {
-
+                ((VigenereCracker) cracker).runCracker();
             } else if (narrowedDownCipherTypes.get(0) == "Columnar Transposition Cipher") {
 
             } else if (narrowedDownCipherTypes.get(0) == "One-Time Pad Cipher") {

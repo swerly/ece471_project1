@@ -77,7 +77,10 @@ public class VigenereCracker extends AbstractCracker{
                 if (scanInput.equals("q") || scanInput.equals("Q")) return;
                 else if (scanInput.length() == 0) continue;
                 else if (scanInput.equals("full text")){
-                    System.out.println(decryptVigenere(currentKey, analytics.getCipherText()));
+                    System.out.printf("\nDecrypted Message:\n\n");
+                    printDecryptedTextEnd( decryptVigenere(currentKey, analytics.getCipherText()) );
+                    System.out.printf("\n");
+                    //System.out.println(decryptVigenere(currentKey, analytics.getCipherText()));
                 }
                 else if (scanInput.equals("info")){
                     String m0 = ("Cipher Analysis Information");
@@ -222,6 +225,19 @@ public class VigenereCracker extends AbstractCracker{
         }
     }
 
+    public void printDecryptedTextEnd(String plainT){
+        int lineSize = 60;
+        int lineCount = 0;
 
+        for (int i = 0; i<plainT.length(); i++){
+            System.out.printf("%c", plainT.charAt( i ));
+
+            lineCount++;
+            if (lineCount >= lineSize){
+                System.out.println();
+                lineCount=0;
+            }
+        }
+    }
 
 }
