@@ -22,6 +22,8 @@ public class CipherCracker {
     private ArrayList<String> possibleCipherTypes;
     private ArrayList<String> narrowedDownCipherTypes;
     private int cipherChoice;
+    private boolean autoORnot;
+    Scanner reader = new Scanner(System.in);
 
     private HashMap<String, AbstractCracker> crackers;
 
@@ -49,29 +51,33 @@ public class CipherCracker {
         //put here
         beginProgram();
 
-        narrowedDownCipherTypes = determineTypeOfCipher();
+        if ( autoORnot == true ) { // if the choice was made to run the auto decryption
 
-        printNarrowedDownTypes();
+            narrowedDownCipherTypes = determineTypeOfCipher();
+            printNarrowedDownTypes();
 
-        if (narrowedDownCipherTypes.size() == 1) {
-            AbstractCracker cracker = crackers.get(narrowedDownCipherTypes.get(0));
+            if (narrowedDownCipherTypes.size() == 1) {
+                AbstractCracker cracker = crackers.get(narrowedDownCipherTypes.get(0));
 
-            if (cracker instanceof ShiftCracker) {
-                System.out.printf("\nDecrytped Message:\n\n");
-                ((ShiftCracker) cracker).printDecryptedText(cipherText);
-            } else if (narrowedDownCipherTypes.get(0) == "Substitution Cipher") {
-                ((SubstitutionCracker) cracker).run(cipherText);
-            } else if (narrowedDownCipherTypes.get(0) == "Vigenere Cipher") {
-                ((VigenereCracker) cracker).runCracker();
-            } else if (narrowedDownCipherTypes.get(0) == "Columnar Transposition Cipher") {
-
-            } else if (narrowedDownCipherTypes.get(0) == "One-Time Pad Cipher") {
-
+                if (cracker instanceof ShiftCracker) {
+                    System.out.printf("\nDecrytped Message:\n\n");
+                    ((ShiftCracker) cracker).printDecryptedText(cipherText);
+                } else if (narrowedDownCipherTypes.get(0) == "Substitution Cipher") {
+                    ((SubstitutionCracker) cracker).run(cipherText);
+                } else if (narrowedDownCipherTypes.get(0) == "Vigenere Cipher") {
+                    ((VigenereCracker) cracker).runCracker();
+                } else if (narrowedDownCipherTypes.get(0) == "Columnar Transposition Cipher") {
+                    System.out.printf("\nWe have found that none of the provided ciphertexts used the\n");
+                    System.out.printf("Columnar-Transposition Cipher, so we never created the cracker.\n");
+                } else if (narrowedDownCipherTypes.get(0) == "One-Time Pad Cipher") {
+                    System.out.printf("\nWe have found the One-Time Pad Cipher to be perfectly secure.\n");
+                }
             }
 
         }
+        else{
 
-        //TODO: insert cipher cracking code here
+        }
 
     }
 
@@ -176,7 +182,7 @@ public class CipherCracker {
         }
     }
 
-    private void beginProgram() {
+    public void beginProgram() {
 
         char yORn;
         int typeOfCipher;
@@ -203,29 +209,38 @@ public class CipherCracker {
                     break;
             case 5: beginOTP();
                     break;
-            case 6: System.out.printf("\nRunning auto-decryptor...\n");
+            case 6: beginAuto();
 
         }
     }
 
-    private void beginShift(){
+    public void beginShift(){
         cipherChoice = 1;
+        autoORnot = false;
 
     }
-    private void beginSubstitution(){
+    public void beginSubstitution(){
         cipherChoice = 2;
+        autoORnot = false;
 
     }
-    private void beginCT(){
+    public void beginCT(){
         cipherChoice = 3;
+        autoORnot = false;
 
     }
-    private void beginVeg(){
+    public void beginVeg(){
         cipherChoice = 4;
+        autoORnot = false;
 
     }
-    private void beginOTP(){
+    public void beginOTP(){
         cipherChoice = 5;
+        autoORnot = false;
 
+    }
+    public void beginAuto(){
+        autoORnot = true;
+        System.out.printf("\nRunning auto-decryptor...\n");
     }
 }

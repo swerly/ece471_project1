@@ -75,10 +75,22 @@ public class SubstitutionCracker extends AbstractCracker {
             System.out.printf("|  In English:  |  e=12.7 t=9.1 a=8.2  o=7.5  i=7.0  n=6.8  s=6.3  h=6.1  r=6.0  d=4.3  l=4.0  u=2.8  c=2.8  w=2.4  m=2.4   |\n");
             System.out.printf("+---------------+-----------------------------------------------------------------------------------------------------------+\n");
 
+            System.out.printf("\nUnused Ciphertext letters: ");
+            for( int i = 0; i < 26; i++ ){
+                if( unusedCipherLetters.get( i ) == false ){
+                    System.out.printf("%c ", i+65);
+                }
+            }
+            System.out.printf("\nUnused Plaintext letters:  ");
+            for( int i = 0; i < 26; i++ ){
+                if( unusedPlainLetters.get( i ) == false ){
+                    System.out.printf("%c ", i+97);
+                }
+            }
 
             tempPT = plainText;
 
-            System.out.printf("\nChoose a letter from the ciphertext to convert (Uppercase Notation Required): ");
+            System.out.printf("\n\nChoose a letter from the ciphertext to convert (Uppercase Notation Required): ");
             do{
                 inputCipherLetter = reader.next().charAt(0);
 
@@ -180,6 +192,12 @@ public class SubstitutionCracker extends AbstractCracker {
             yORn = ' ';
 
         }
+
+    }
+
+    public void runManual(){
+
+
 
     }
 
