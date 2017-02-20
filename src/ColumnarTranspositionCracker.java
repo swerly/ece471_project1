@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Created by Seth on 2/11/2017.
  */
@@ -25,5 +27,14 @@ public class ColumnarTranspositionCracker extends AbstractCracker {
     @Override
     public void runCracker() {
 
+    }
+
+    public static void crackCT(String cipherText, String key){
+        /*
+        double numRows = Math.ceil(cipherText.length()/key.length());
+        int columnLength = (int)numRows;
+        ArrayList<String> columns = key.length();
+
+        cipherText.su*/
     }
 }

@@ -97,11 +97,15 @@ public class ShiftCracker extends AbstractCracker{
     }
 
     public void printDecryptedText(String cipher){
+        printDecryptedText(cipher, cipherShamt);
+    }
+
+    public static void printDecryptedText(String cipher, int shamt){
         int lineSize = 60;
         int lineCount = 0;
 
         for (int i = 0; i<cipher.length(); i++){
-            System.out.printf("%c", getShiftedChar(cipher.charAt(i), cipherShamt));
+            System.out.printf("%c", getShiftedChar(cipher.charAt(i), shamt));
 
             lineCount++;
             if (lineCount >= lineSize){

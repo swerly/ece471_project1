@@ -6,6 +6,7 @@ public class Main {
 
         if (args.length <= 0){
             System.out.println("No filename entered, exiting...");
+            return;
         }
         CipherCracker cipherCracker = new CipherCracker(args[0]);
         cipherCracker.run();
