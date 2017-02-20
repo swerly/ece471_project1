@@ -142,7 +142,7 @@ public class SubstitutionCracker extends AbstractCracker {
             if( yORn == 'n' ){ //fix?
                 unusedCipherLetters.set( inputCipherLetter - 65, false );
                 unusedPlainLetters.set( inputPlainLetter - 97, false );
-                mappedCipher.set( inputCipherLetter - 97, -1 );
+                mappedCipher.set( inputCipherLetter - 65, -1 );
                 plainText = tempPT;
             }
 
