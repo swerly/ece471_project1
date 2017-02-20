@@ -201,18 +201,23 @@ public class CipherCracker {
         SubstitutionCracker sc = new SubstitutionCracker(analytics);
         Scanner reader = new Scanner(System.in);
         String subs;
-        while (true) {
-            System.out.printf("\nEnglish Letters:     ABCDEFGHIJKLMNOPQRSTUVWXYZ");
-            System.out.printf("\nSubstituted Letters: ");
-            subs = reader.nextLine();
-            if (subs.length() != 26){
-                System.out.println("Please enter in a substitution for all the characters.");
-            } else break;
+        System.out.printf("\nWould you like to enter a substitution key or run manual substitution (1,2)?\n    1. Enter substitution key\n    2. Run manual substitution");
+        int choice = reader.nextInt();
+        if (choice == 1) {
+            //make user enter in substitution key
+            while (true) {
+                System.out.printf("\nEnglish Letters:     ABCDEFGHIJKLMNOPQRSTUVWXYZ");
+                System.out.printf("\nSubstituted Letters: ");
+                subs = reader.nextLine();
+                if (subs.length() != 26) {
+                    System.out.println("Please enter in a substitution for all the characters.");
+                } else break;
+            }
+            //todo: uncomment this next line when Travis implements method
+            //SubstitutionCracker.runManual(analytics.getCipherText(), subs);
+        } else {
+            sc.run(analytics.getCipherText());
         }
-
-        //SubstitutionCracker.runManual(analytics.getCipherText(), subs);
-
-
     }
     public void beginCT(){
         cipherChoice = 3;
