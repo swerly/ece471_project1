@@ -6,6 +6,7 @@ import java.util.*;
  * Created by Seth on 2/10/2017.
  */
 public class VigenereCracker extends AbstractCracker{
+    public static int KEYS_TO_TEST = 100;
     private ArrayList<Integer> potentialPeriods;
     private HashMap<Integer, String[]> sequences;
 
@@ -42,7 +43,7 @@ public class VigenereCracker extends AbstractCracker{
         potentialPeriods = getPotentialPeriods();
         String msg = potentialPeriods.size() > 0 ?
                 "Possible key lengths for the Vigenere cipher were found.":
-                "No likely keys < 15 characters in length";
+                "No likely keys < " + KEYS_TO_TEST + " characters in length";
         CipherCracker.printStatusMessage(msg, null);
         return potentialPeriods.size() > 0;
     }
@@ -92,7 +93,7 @@ public class VigenereCracker extends AbstractCracker{
                 }
                 else if (scanInput.equals("try next")){
                     if (period == potentialPeriods.get(potentialPeriods.size()-1)){
-                        CipherCracker.printStatusMessage("There were no more potential keys found (<= 15 characters)\n\nExiting...\n\n", null);
+                        CipherCracker.printStatusMessage("There were no more potential keys found (<=" + KEYS_TO_TEST + " characters)\n\nExiting...\n\n", null);
                     }
                     break;
                 }
@@ -181,8 +182,8 @@ public class VigenereCracker extends AbstractCracker{
         averageICs.add(analytics.getIndexOfCoincidence());
         sequences.put(1, new String[]{analytics.getCipherText()});
 
-        //get ic for each key length (up to 15)
-        for (int keyLength = 2; keyLength<=15; keyLength++){
+        //get ic for each key length (up to KEYS_TO_TEST)
+        for (int keyLength = 2; keyLength<=KEYS_TO_TEST; keyLength++){
             //our key length determines the number of strings we split the cipher text into
             String[] sequences = new String[keyLength];
             //initialize all the strings to be empty
@@ -225,7 +226,7 @@ public class VigenereCracker extends AbstractCracker{
         }
     }
 
-    public void printDecryptedTextEnd(String plainT){
+    public static void printDecryptedTextEnd(String plainT){
         int lineSize = 60;
         int lineCount = 0;
 

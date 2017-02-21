@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by Seth on 2/8/2017.
@@ -18,28 +19,50 @@ public class ShiftCracker extends AbstractCracker{
     public boolean testCipher(){
         if(!testFrequencies()){
             String msg = "Top cipher letter frequencies don't match common English letter frequencies.\n" +
-                    "This was most likely not encrypted using shifts, but may be bruteforced later.";
+                    "This was most likely not encrypted using shifts";
             CipherCracker.printStatusMessage(msg, null);
             return false;
         }
 
         if (!testShiftAmt()){
             String msg = "When comparing cipher letter frequencies to common English letter frequencies, the shifts do not match up." +
-                    "This was most likely not encrypted using shifts, but may be bruteforced later";
+                    "This was most likely not encrypted using shifts";
             CipherCracker.printStatusMessage(msg, null);
             return false;
         }
 
         String msg = "When comparing cipher letter frequencies to common English letter frequencies, the shifts seem to match!\n" +
-                "This was most likey encrypted using shifts, but we will confirm later";
+                "This was most likey encrypted using a shift of " + this.cipherShamt + ", but we will confirm later";
         CipherCracker.printStatusMessage(msg, null);
         return true;
     }
 
     @Override
     public void runCracker() {
-        //todo: does this text look decrypted?
-        //if not, try just shifting by e
+        while(true) {
+            Scanner scanner = new Scanner(System.in);
+            String shifted = getShiftedText(analytics.getCipherText(), cipherShamt);
+            System.out.println("\n\nHere is a snippet of the text decrypted with a shift of " + cipherShamt);
+            System.out.println("    " + shifted.substring(0, 60));
+            System.out.println("Please select an option (1-4):\n    1. Print Full Text\n    2. Print Shift Amount\n    3. Try another cipher\n    4. Exit Program");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1:
+                    printDecryptedText(analytics.getCipherText(), cipherShamt);
+                    break;
+                case 2:
+                    System.out.println("Shift amount used: " + cipherShamt);
+                    break;
+                case 3:
+                    return;
+                case 4:
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Please select a choice from the list");
+                    break;
+            }
+        }
     }
 
     public boolean testFrequencies(){
@@ -97,6 +120,7 @@ public class ShiftCracker extends AbstractCracker{
     }
 
     public void printDecryptedText(String cipher){
+
         printDecryptedText(cipher, cipherShamt);
     }
 
@@ -105,7 +129,8 @@ public class ShiftCracker extends AbstractCracker{
         int lineCount = 0;
 
         for (int i = 0; i<cipher.length(); i++){
-            System.out.printf("%c", getShiftedChar(cipher.charAt(i), shamt));
+            char shifted = getShiftedChar(cipher.charAt(i), shamt);
+            System.out.printf("%c", shifted);
 
             lineCount++;
             if (lineCount >= lineSize){
@@ -113,6 +138,18 @@ public class ShiftCracker extends AbstractCracker{
                 lineCount=0;
             }
         }
+    }
+
+    public String getShiftedText(String cipher, int shamt){
+        int lineSize = 60;
+        int lineCount = 0;
+        String ret = "";
+
+        for (int i = 0; i<cipher.length(); i++){
+            char shifted = getShiftedChar(cipher.charAt(i), shamt);
+            ret+=shifted;
+        }
+        return ret;
     }
 
     public static char getShiftedChar(char c, int shift){

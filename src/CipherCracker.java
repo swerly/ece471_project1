@@ -50,9 +50,6 @@ public class CipherCracker {
 
         //put here
         beginProgram();
-
-
-
     }
 
     private String getCipherTextFromFile(String path) {
@@ -82,7 +79,7 @@ public class CipherCracker {
             possibleTypes.add(ONE_TIME_PAD_CIPHER);
         }
         possibleCipherTypes = possibleTypes;
-        printStatusMessage("Based of the Index of Coincidence, this cipher could be enycrypted with: ", possibleTypes);
+        printStatusMessage("Based of the Index of Coincidence, this cipher could be encrypted with: ", possibleTypes);
         return narrowDown(possibleTypes);
     }
 
@@ -151,8 +148,6 @@ public class CipherCracker {
             for (String s : narrowedDownCipherTypes) {
                 System.out.println("    -" + s);
             }
-
-            System.out.println("Let's see if I was correct!");
         }
     }
 
@@ -161,29 +156,43 @@ public class CipherCracker {
         int typeOfCipher;
         Scanner reader = new Scanner(System.in);
 
-        System.out.printf("\nDo you know the type of cpher used to encrypt (1-6)?\n");
-        System.out.printf("    1: Shift Cipher\n    2: Substitution Cipher\n    3: Vigenere Cipher\n    4: Columnar Transposition Cipher\n    5: One-Time Pad Cipher\n    6: I don't know the cipher\n\nYour Choice: ");
-        do{
-            typeOfCipher = reader.nextInt();
-            if( typeOfCipher < 1 || typeOfCipher > 6 ){
-                System.out.printf("\nInvalid choice, please choose again: ");
+        while (true) {
+            System.out.printf("\nDo you know the type of cipher used to encrypt (1-6)?\n");
+            System.out.printf("    1: Shift Cipher\n    2: Substitution Cipher\n    3: Vigenere Cipher\n    4: Columnar Transposition Cipher\n    5: One-Time Pad Cipher\n    6: I don't know the cipher\n\nYour Choice: ");
+            do {
+                typeOfCipher = reader.nextInt();
+                if (typeOfCipher < 1 || typeOfCipher > 6) {
+                    System.out.printf("\nInvalid choice, please choose again: ");
+                }
+            } while (typeOfCipher < 1 || typeOfCipher > 6);
+
+            switch (typeOfCipher) {
+
+                case 1:
+                    beginShift();
+                    break;
+                case 2:
+                    beginSubstitution();
+                    break;
+                case 3:
+                    beginVeg();
+                    break;
+                case 4:
+                    beginCT();
+                    break;
+                case 5:
+                    beginOTP();
+                    break;
+                case 6:
+                    beginAuto();
+
             }
-        }while( typeOfCipher < 1 || typeOfCipher > 6 );
-
-        switch ( typeOfCipher ){
-
-            case 1: beginShift();
-                    break;
-            case 2: beginSubstitution();
-                    break;
-            case 3: beginVeg();
-                    break;
-            case 4: beginCT();
-                    break;
-            case 5: beginOTP();
-                    break;
-            case 6: beginAuto();
-
+            Scanner r2 = new Scanner(System.in);
+            System.out.printf("\nWould you like to try a different cipher? (y/n) ");
+            String diff = r2.nextLine();
+            if (!diff.equals("y") && !diff.equals("Y")){
+                break;
+            }
         }
     }
 
@@ -201,14 +210,17 @@ public class CipherCracker {
         SubstitutionCracker sc = new SubstitutionCracker(analytics);
         Scanner reader = new Scanner(System.in);
         String subs;
-        System.out.printf("\nWould you like to enter a substitution key or run manual substitution (1,2)?\n    1. Enter substitution key\n    2. Run manual substitution");
+        System.out.printf("\nWould you like to enter a substitution key or run manual substitution (1,2)?\n    1. Enter substitution key\n    2. Run manual substitution\n\nEnter your choice: ");
         int choice = reader.nextInt();
+        reader.nextLine();
         if (choice == 1) {
             //make user enter in substitution key
             while (true) {
                 System.out.printf("\nEnglish Letters:     ABCDEFGHIJKLMNOPQRSTUVWXYZ");
                 System.out.printf("\nSubstituted Letters: ");
                 subs = reader.nextLine();
+                //not sure if you needed upper or lowercase here, but it is easily changed
+                subs = subs.toLowerCase();
                 if (subs.length() != 26) {
                     System.out.println("Please enter in a substitution for all the characters.");
                 } else break;
@@ -220,19 +232,17 @@ public class CipherCracker {
         }
     }
     public void beginCT(){
-        cipherChoice = 3;
-        autoORnot = false;
+        System.out.println("Sorry, Columnar Transposition has not been implemented at this time.");
 
     }
     public void beginVeg(){
-        cipherChoice = 4;
-        autoORnot = false;
-
+        Scanner reader = new Scanner(System.in);
+        System.out.printf("\nEnter in a key to decrypt the Vigenere Cipher: ");
+        String key = reader.nextLine();
+        VigenereCracker.printDecryptedTextEnd( VigenereCracker.decryptVigenere(key.toUpperCase(), analytics.getCipherText()) );
     }
     public void beginOTP(){
-        cipherChoice = 5;
-        autoORnot = false;
-
+        System.out.println("Sorry, but there is nothing we can do to break a One-Time Pad :(");
     }
     public void beginAuto(){
 
@@ -241,21 +251,21 @@ public class CipherCracker {
         narrowedDownCipherTypes = determineTypeOfCipher();
         printNarrowedDownTypes();
 
-        if (narrowedDownCipherTypes.size() == 1) {
+        if (narrowedDownCipherTypes.size() >= 1) {
             AbstractCracker cracker = crackers.get(narrowedDownCipherTypes.get(0));
 
             if (cracker instanceof ShiftCracker) {
-                System.out.printf("\nDecrytped Message:\n\n");
-                ((ShiftCracker) cracker).printDecryptedText(cipherText);
-            } else if (narrowedDownCipherTypes.get(0) == "Substitution Cipher") {
+                ((ShiftCracker) cracker).runCracker();
+            } else if (cracker instanceof SubstitutionCracker) {
                 ((SubstitutionCracker) cracker).run(cipherText);
-            } else if (narrowedDownCipherTypes.get(0) == "Vigenere Cipher") {
+            } else if (cracker instanceof VigenereCracker) {
                 ((VigenereCracker) cracker).runCracker();
-            } else if (narrowedDownCipherTypes.get(0) == "Columnar Transposition Cipher") {
+            } else if (narrowedDownCipherTypes.get(0).equals(COLUMNAR_TRANSPOSITION_CIPHER)) {
                 System.out.printf("\nWe have found that none of the provided ciphertexts used the\n");
-                System.out.printf("Columnar-Transposition Cipher, so we never created the cracker.\n");
-            } else if (narrowedDownCipherTypes.get(0) == "One-Time Pad Cipher") {
-                System.out.printf("\nWe have found the One-Time Pad Cipher to be perfectly secure.\n");
+                System.out.printf("Columnar-Transposition Cipher, so the cracker has not been implemented.\n");
+            } else if (narrowedDownCipherTypes.get(0).equals(ONE_TIME_PAD_CIPHER)) {
+                System.out.printf("\nWe have found the One-Time Pad Cipher to be perfectly secure.\n" +
+                        "Sorry but we cannot decrypt the One-Time Pad.");
             }
         }
     }
