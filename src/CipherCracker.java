@@ -226,7 +226,7 @@ public class CipherCracker {
                 } else break;
             }
             //todo: uncomment this next line when Travis implements method
-            //SubstitutionCracker.runManual(analytics.getCipherText(), subs);
+            SubstitutionCracker.runManual(analytics.getCipherText(), subs);
         } else {
             sc.run(analytics.getCipherText());
         }

@@ -195,10 +195,29 @@ public class SubstitutionCracker extends AbstractCracker {
 
     }
 
-    public void runManual(){
+    public static void runManual(String cipherT, String subStr){
 
+        //takes 26 character string
+        //replace all
 
+        for ( int i = 0; i < 26; i ++ ){
+            cipherT = cipherT.replace((char)(i + 65), subStr.charAt(i));
+        }
 
+        int lineSize = 60;
+        int lineCount = 0;
+
+        System.out.println();
+        for (int i = 0; i<cipherT.length(); i++){
+            System.out.printf("%c", cipherT.charAt( i ));
+
+            lineCount++;
+            if (lineCount >= lineSize){
+                System.out.println();
+                lineCount=0;
+            }
+        }
+        System.out.println();
     }
 
     public void printDecryptedText(String plainT){
